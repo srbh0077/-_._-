@@ -12,7 +12,7 @@ pipeline {
             steps {
                 bat '''
                     mkdir results
-
+                    if exist results rmdir /s /q results
                     newman run reqres_API_DDT.postman_collection.json ^
                         -e ReqRes.postman_environment.json ^
                         -d DDT4reqres.json ^
