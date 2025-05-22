@@ -40,6 +40,7 @@ pipeline {
                 reportDir: 'results',
                 reportFiles: 'report-htmlextra.html',
                 reportName: 'Postman DDT Report (HTMLEXTRA)'
+            ])
         }
     }
 }
