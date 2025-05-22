@@ -2,9 +2,12 @@ pipeline {
     agent any
 
     stages {
-        stage('Install Newman') {
+        stage('Install Newman & Reporter') {
             steps {
-                bat 'npm install -g newman'
+                bat '''
+                    npm install -g newman
+                    npm install -g newman-reporter-htmlextra
+                '''
             }
         }
 
@@ -18,8 +21,9 @@ pipeline {
                         -d DDT4reqres.json ^
                         --insecure ^
                         --verbose ^
-                        --reporters cli,html ^
-                        --reporter-html-export results\report.html
+                        --reporters cli,html,htmlextra ^
+                        --reporter-html-export results\\report-html.html ^
+                        --reporter-htmlextra-export results\\report-htmlextra.html
                 '''
             }
         }
@@ -29,9 +33,13 @@ pipeline {
         always {
             publishHTML(target: [
                 reportDir: 'results',
-                reportFiles: 'report.html',
-                reportName: 'Postman DDT Report'
+                reportFiles: 'report-html.html',
+                reportName: 'Postman DDT Report (HTML)'
             ])
+             publishHTML(target: [
+                reportDir: 'results',
+                reportFiles: 'report-htmlextra.html',
+                reportName: 'Postman DDT Report (HTMLEXTRA)'
         }
     }
 }
