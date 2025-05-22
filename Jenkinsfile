@@ -17,6 +17,7 @@ pipeline {
                         -e ReqRes.postman_environment.json ^
                         -d DDT4reqres.json ^
                         --insecure ^
+                        --verbose ^
                         --reporters cli,html ^
                         --reporter-html-export results\report.html
                 '''
