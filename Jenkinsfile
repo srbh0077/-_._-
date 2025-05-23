@@ -22,8 +22,8 @@ pipeline {
                         --insecure ^
                         --verbose ^
                         --reporters cli,html,htmlextra ^
-                        --reporter-html-export results\\report-html.html ^
-                        --reporter-htmlextra-export results\\report-htmlextra.html
+                        --reporter-html-export results\\report-%BUILD_NUMBER%-html.html ^
+                        --reporter-htmlextra-export results\\report-%BUILD_NUMBER%-htmlextra.html
                 '''
             }
         }
@@ -33,12 +33,12 @@ pipeline {
         always {
             publishHTML(target: [
                 reportDir: 'results',
-                reportFiles: 'report-html.html',
+                reportFiles: 'report-%BUILD_NUMBER%-html.html',
                 reportName: 'Postman DDT Report (HTML)'
             ])
              publishHTML(target: [
                 reportDir: 'results',
-                reportFiles: 'report-htmlextra.html',
+                reportFiles: 'report-%BUILD_NUMBER%-htmlextra.html',
                 reportName: 'Postman DDT Report (HTMLEXTRA)'
             ])
         }
