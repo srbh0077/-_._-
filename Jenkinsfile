@@ -1,7 +1,18 @@
 pipeline {
     agent any
 
+    tools {
+        // Optional: Use NodeJS plugin if configured in Jenkins
+        // nodejs 'Node18'
+    }
+
     stages {
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
         stage('Install Newman & Reporter') {
             steps {
                 bat '''
@@ -16,14 +27,14 @@ pipeline {
                 bat '''
                     if exist results rmdir /s /q results
                     mkdir results
+
                     newman run reqres_API_DDT.postman_collection.json ^
                         -e ReqRes.postman_environment.json ^
-                        -d DDT4reqres.json ^
+                        -d data.csv ^
                         --insecure ^
-                        --verbose ^
                         --reporters cli,html,htmlextra ^
-                        --reporter-html-export results\\report-%BUILD_NUMBER%-html.html ^
-                        --reporter-htmlextra-export results\\report-%BUILD_NUMBER%-htmlextra.html
+                        --reporter-html-export results\\report-html.html ^
+                        --reporter-htmlextra-export results\\report-htmlextra.html
                 '''
             }
         }
@@ -33,12 +44,12 @@ pipeline {
         always {
             publishHTML(target: [
                 reportDir: 'results',
-                reportFiles: 'report-%BUILD_NUMBER%-html.html',
+                reportFiles: 'report-html.html',
                 reportName: 'Postman DDT Report (HTML)'
             ])
-             publishHTML(target: [
+            publishHTML(target: [
                 reportDir: 'results',
-                reportFiles: 'report-%BUILD_NUMBER%-htmlextra.html',
+                reportFiles: 'report-htmlextra.html',
                 reportName: 'Postman DDT Report (HTMLEXTRA)'
             ])
         }
