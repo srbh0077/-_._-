@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        // Optional: Use NodeJS plugin if configured in Jenkins
-        // nodejs 'Node18'
-    }
-
     stages {
         stage('Clean Workspace') {
             steps {
