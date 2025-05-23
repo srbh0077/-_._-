@@ -16,7 +16,7 @@ pipeline {
                 bat '''
                     if exist results rmdir /s /q results
                     mkdir results
-                    newman run reqres_API_DDT.postman_collection.json ^
+                    C:\\Users\\Pc\\AppData\\Roaming\\npm\\newman.cmd run reqres_API_DDT.postman_collection.json ^
                         -e ReqRes.postman_environment.json ^
                         -d DDT4reqres.json ^
                         --insecure ^
