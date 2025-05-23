@@ -2,12 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Clean Workspace') {
-            steps {
-                cleanWs()
-            }
-        }
-
         stage('Install Newman & Reporter') {
             steps {
                 bat '''
@@ -22,11 +16,11 @@ pipeline {
                 bat '''
                     if exist results rmdir /s /q results
                     mkdir results
-
-                    newman run reqres_API_DDT.postman_collection.json ^
+                    C:\\Users\\Pc\\AppData\\Roaming\\npm\\newman.cmd run reqres_API_DDT.postman_collection.json ^
                         -e ReqRes.postman_environment.json ^
-                        -d data.csv ^
+                        -d DDT4reqres.json ^
                         --insecure ^
+                        --verbose ^
                         --reporters cli,html,htmlextra ^
                         --reporter-html-export results\\report-html.html ^
                         --reporter-htmlextra-export results\\report-htmlextra.html
@@ -42,7 +36,7 @@ pipeline {
                 reportFiles: 'report-html.html',
                 reportName: 'Postman DDT Report (HTML)'
             ])
-            publishHTML(target: [
+             publishHTML(target: [
                 reportDir: 'results',
                 reportFiles: 'report-htmlextra.html',
                 reportName: 'Postman DDT Report (HTMLEXTRA)'
